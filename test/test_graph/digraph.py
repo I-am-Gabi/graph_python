@@ -59,7 +59,7 @@ class TestDiGraph(unittest.TestCase):
         g.add(1, 0)
         g.add(1, 1)
         self.assertTrue(g.connected())
-        self.assertTrue(g.undigraph_connected())
+        self.assertTrue(g.strongly_connected())
 
         g = DiGraph(4)
         g.add(0, 1)
@@ -67,7 +67,31 @@ class TestDiGraph(unittest.TestCase):
         g.add(1, 1)
         g.add(2, 3)
         self.assertFalse(g.connected())
-        self.assertTrue(g.undigraph_connected())
+        self.assertTrue(g.strongly_connected())
+
+    # TODO: use mock to handle with random
+    # TODO: improve the execution control
+    def test_bfs(self):
+        g = DiGraph(3)
+        g.add(0, 1)
+        g.add(0, 2)
+        seq, dist = g.bfs()
+        self.assertEqual(dist[0], 0)
+        if seq[0] is not 0:
+            if seq[1] is not 0:
+                self.assertEqual(dist[1], 0)
+                self.assertEqual(dist[2], 0)
+            elif seq[2] is 1:
+                self.assertEqual(dist[1], 1)
+                self.assertEqual(dist[2], 0)
+            else:
+                self.assertEqual(dist[1], 0)
+                self.assertEqual(dist[2], 1)
+        else:
+            self.assertEqual(dist[0], 0)
+            self.assertEqual(dist[1], 1)
+            self.assertEqual(dist[2], 1)
+
 
 if __name__ == '__main__':
     unittest.main()

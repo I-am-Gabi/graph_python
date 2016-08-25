@@ -59,5 +59,13 @@ class TestUnDiGraph(unittest.TestCase):
         g.add(2, 3)
         self.assertTrue(g.connected())
 
+    def test_path_to(self):
+        g = UnDiGraph(5)
+        g.add(0, 1)
+        g.add(0, 2)
+        g.add(2, 3)
+        self.assertTrue(g.path_to(0, 3))
+        self.assertFalse(g.path_to(0, 4))
+
 if __name__ == '__main__':
     unittest.main()

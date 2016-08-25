@@ -36,6 +36,21 @@ class DiGraph(AbsGraph):
     def degree(self, node):
         return len(self.adjacent_list(node)) + self._inDegree[node]
 
+    def connected(self):
+        """
+        checks if the graph is connected
+        """
+        path = [0] * self.nb_vertices
+        for u in range(0, self.nb_vertices):
+            path[u] = 1
+            for v in self.adjacent_list(u):
+                self.make_path(v, path)
+
+            if 0 in path:
+                return False
+            path = [0] * self.nb_vertices
+        return True
+
     def in_degree(self, node):
         """
         calculates the indegree
@@ -52,7 +67,7 @@ class DiGraph(AbsGraph):
         """
         return len(self.adjacent_list(node))
 
-    def undigraph_connected(self):
+    def strongly_connected(self):
         """
         checks if the undigraph made from the original digraph is connected
         :return: true if it's connected, false otherwise
@@ -70,3 +85,10 @@ class DiGraph(AbsGraph):
             for v in self.adjacent_list(u):
                 graph.add(u, v)
         return graph
+
+
+g = DiGraph(3)
+g.add(0, 1)
+g.add(0, 2)
+g.bfs()
+g.dfs()
