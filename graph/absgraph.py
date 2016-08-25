@@ -107,7 +107,7 @@ class AbsGraph:
         pass
 
     @abstractmethod
-    def make_path(self, node, path, opt):
+    def make_path(self, node, path, opt=None):
         """
         aux method to build the path among the nodes
         :param node: current node

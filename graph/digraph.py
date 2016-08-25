@@ -51,6 +51,20 @@ class DiGraph(AbsGraph):
             path = [0] * self.nb_vertices
         return True
 
+    def make_path(self, node, path, opt=None):
+        """
+        aux method to build the path among the nodes
+        :param opt:
+        :param node: current node
+        :param path: path in progress
+        :return:
+        """
+        if path[node] == 1: return
+        path[node] = 1
+        for adj in self.adjacent_list(node):
+            self.make_path(adj, path)
+            path[adj] = 1
+
     def in_degree(self, node):
         """
         calculates the indegree
@@ -85,10 +99,3 @@ class DiGraph(AbsGraph):
             for v in self.adjacent_list(u):
                 graph.add(u, v)
         return graph
-
-
-g = DiGraph(3)
-g.add(0, 1)
-g.add(0, 2)
-g.bfs()
-g.dfs()
