@@ -75,7 +75,7 @@ class TestDiGraph(unittest.TestCase):
         g = DiGraph(3)
         g.add(0, 1)
         g.add(0, 2)
-        seq, dist = g.bfs()
+        seq, dist, comp = g.bfs()
         self.assertEqual(dist[0], 0)
         if seq[0] is not 0:
             if seq[1] is not 0:

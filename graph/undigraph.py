@@ -45,21 +45,15 @@ class UnDiGraph(AbsGraph):
         for u in range(0, self.nb_vertices):
             path[u] = 1
             for v in self.adjacent_list(u):
-                if v not in opt:
-                    self.make_path(v, path, opt)
-                else:
-                    path = [1] * self.nb_vertices
-                    break
+                self.make_path(v, path, opt)
 
             if 0 in path:
                 return False
             else:
-                opt.append(u)
-
-            path = [0] * self.nb_vertices
+                return True
         return True
 
-    def make_path(self, node, path, opt):
+    def make_path(self, node, path, opt=None):
             """
             aux method to build the path among the nodes
             :param node: current node

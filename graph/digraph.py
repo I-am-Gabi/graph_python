@@ -41,29 +41,39 @@ class DiGraph(AbsGraph):
         checks if the graph is connected
         """
         path = [0] * self.nb_vertices
+        opt = []
         for u in range(0, self.nb_vertices):
             path[u] = 1
             for v in self.adjacent_list(u):
-                self.make_path(v, path)
+                if v not in opt:
+                    self.make_path(v, path, opt)
+                else:
+                    path = [1] * self.nb_vertices
+                    break
 
             if 0 in path:
                 return False
+            else:
+                opt.append(u)
+
             path = [0] * self.nb_vertices
         return True
 
     def make_path(self, node, path, opt=None):
         """
         aux method to build the path among the nodes
-        :param opt:
         :param node: current node
         :param path: path in progress
         :return:
         """
-        if path[node] == 1: return
+        if path[node] == 1 and node not in opt:
+            return
         path[node] = 1
-        for adj in self.adjacent_list(node):
-            self.make_path(adj, path)
-            path[adj] = 1
+        for v in self.adjacent_list(node):
+            if v not in opt:
+                self.make_path(v, path, opt)
+            else:
+                path[v] = 1
 
     def in_degree(self, node):
         """

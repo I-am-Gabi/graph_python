@@ -125,6 +125,7 @@ class AbsGraph:
         status = []
         sequence = []
         distance = []
+        cont_components = 1
         # initializes status
         for node in range(0, self.nb_vertices):
             status.append(Status.white)
@@ -147,7 +148,8 @@ class AbsGraph:
             distance[n] = 0
             queue = deque([n])
             self.__aux_bfs(queue, status, sequence, distance)
-        return sequence, distance
+            cont_components += 1
+        return sequence, distance, cont_components
 
     def __aux_bfs(self, queue, status, sequence, distance):
         while queue:
