@@ -42,32 +42,31 @@ class UnDiGraph(AbsGraph):
         """
         path = [0] * self.nb_vertices
         opt = []
-        for u in range(0, self.nb_vertices):
-            path[u] = 1
-            for v in self.adjacent_list(u):
-                self.make_path(v, path, opt)
+        u = 0
+        path[u] = 1
+        for v in self.adjacent_list(u):
+            self.make_path(v, path, opt)
 
-            if 0 in path:
-                return False
-            else:
-                return True
-        return True
+        if 0 in path:
+            return False
+        else:
+            return True
 
     def make_path(self, node, path, opt=None):
-            """
-            aux method to build the path among the nodes
-            :param node: current node
-            :param path: path in progress
-            :return:
-            """
-            if path[node] == 1 and node not in opt:
-                return
-            path[node] = 1
-            for v in self.adjacent_list(node):
-                if v not in opt:
-                    self.make_path(v, path, opt)
-                else:
-                    path[v] = 1
+        """
+        aux method to build the path among the nodes
+        :param node: current node
+        :param path: path in progress
+        :return:
+        """
+        if path[node] == 1 and node not in opt:
+            return
+        path[node] = 1
+        for v in self.adjacent_list(node):
+            if v not in opt:
+                self.make_path(v, path, opt)
+            else:
+                path[v] = 1
 
     def path_to(self, from_, to_):
         print from_, to_

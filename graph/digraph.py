@@ -109,3 +109,11 @@ class DiGraph(AbsGraph):
             for v in self.adjacent_list(u):
                 graph.add(u, v)
         return graph
+
+
+g = DiGraph(6)
+g.add(0, 1)
+g.add(0, 2)
+g.add(1, 1)
+g.add(2, 3)
+print g.bfs()

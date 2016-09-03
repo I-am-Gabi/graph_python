@@ -123,22 +123,14 @@ class AbsGraph:
         :return:
         """
         status = []
-        sequence = []
         distance = []
-        cont_components = 1
-        # initializes status
+        parents = []
+        cont_components = 0
+
         for node in range(0, self.nb_vertices):
             status.append(Status.white)
             distance.append(-1)
-        # takes a random vertex
-        n = rand.randint(0, self.nb_vertices - 1)
-        # changes status and distance
-        status[n] = Status.gray
-        distance[n] = 0
-        # adds initial vertex into queue
-        queue = deque([n])
-        # calls aux method bfs
-        self.__aux_bfs(queue, status, sequence, distance)
+            parents.append(-1)
 
         # if there is a node not visited
         while Status.white in status:
@@ -146,20 +138,20 @@ class AbsGraph:
             while status[n] != Status.white: n += 1
             status[n] = Status.gray
             distance[n] = 0
+            parents[n] = n
             queue = deque([n])
-            self.__aux_bfs(queue, status, sequence, distance)
+            self.__aux_bfs(queue, status, distance, parents)
             cont_components += 1
-        return sequence, distance, cont_components
+        return distance, parents, cont_components
 
-    def __aux_bfs(self, queue, status, sequence, distance):
+    def __aux_bfs(self, queue, status, distance, parents):
         while queue:
             u = queue.popleft()
-            sequence.append(u)
-            print u
             for v in self.adjacent_list(u):
                 if status[v] is Status.white:
                     status[v] = Status.gray
                     distance[v] = distance[u] + 1
+                    parents[v] = u
                     queue.append(v)
             status[u] = Status.black
 
