@@ -125,7 +125,6 @@ class AbsGraph:
         status = []
         distance = []
         parents = []
-        cont_components = 0
 
         for node in range(0, self.nb_vertices):
             status.append(Status.white)
@@ -141,8 +140,7 @@ class AbsGraph:
             parents[n] = n
             queue = deque([n])
             self.__aux_bfs(queue, status, distance, parents)
-            cont_components += 1
-        return distance, parents, cont_components
+        return distance, parents
 
     def __aux_bfs(self, queue, status, distance, parents):
         while queue:
@@ -160,6 +158,7 @@ class AbsGraph:
         # initializes status
         for node in range(0, self.nb_vertices):
             status.append(Status.white)
+
         self.__aux_dfs(status, rand.randint(0, self.nb_vertices - 1))
         for v in range(0, self.nb_vertices):
             if status[v] is Status.white:

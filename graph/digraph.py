@@ -36,7 +36,31 @@ class DiGraph(AbsGraph):
     def degree(self, node):
         return len(self.adjacent_list(node)) + self._inDegree[node]
 
-    def connected(self):
+    def components(self):
+        path = [0] * self.nb_vertices
+        m = [[0] * self.nb_vertices] * self.nb_vertices
+        for u in range(0, self.nb_vertices):
+            path[u] = 1
+            for v in self.adjacent_list(u):
+                self.make_path(v, path, [])
+                m[u] = path
+            path = [0] * self.nb_vertices
+
+        cont = 1
+        comp = [0] * self.nb_vertices
+        for i in range(0, self.nb_vertices):
+            for j in range(0, self.nb_vertices):
+                if m[i][j] == 1 and m[j][i] == 1:
+                    if comp[i] != 0:
+                        comp[j] = comp[i]
+                    elif comp[j] != 0:
+                        comp[i] = comp[j]
+                    else:
+                        comp[i] = comp[j] = cont
+                        cont += 1
+        return m, comp
+
+    def strongly_connected(self):
         """
         checks if the graph is connected
         """
@@ -62,6 +86,7 @@ class DiGraph(AbsGraph):
     def make_path(self, node, path, opt=None):
         """
         aux method to build the path among the nodes
+        :param opt:
         :param node: current node
         :param path: path in progress
         :return:
@@ -91,7 +116,7 @@ class DiGraph(AbsGraph):
         """
         return len(self.adjacent_list(node))
 
-    def strongly_connected(self):
+    def connected(self):
         """
         checks if the undigraph made from the original digraph is connected
         :return: true if it's connected, false otherwise
@@ -110,10 +135,37 @@ class DiGraph(AbsGraph):
                 graph.add(u, v)
         return graph
 
+    def topological_sort(self):
+        queue = []
+        final_queue = []
+        for u in range(0, self.nb_vertices):
+            if self._inDegree[u] == 0:
+                queue.append(u)
+
+        while queue:
+            u = queue.pop()
+            final_queue.append(u)
+            for v in self.adjacent_list(u):
+                self._inDegree[v] -= 1
+                if self._inDegree[v] == 0:
+                    queue.append(v)
+        return final_queue
+
+    def cyclic(self):
+        q = self.topological_sort()
+        if q is not self.nb_vertices:
+            return True
+        return False
+
+
 
 g = DiGraph(6)
 g.add(0, 1)
 g.add(0, 2)
-g.add(1, 1)
-g.add(2, 3)
-print g.bfs()
+g.add(1, 2)
+g.add(2, 0)
+g.add(3, 4)
+g.add(4, 3)
+m, comp = g.components()
+print m
+print comp
